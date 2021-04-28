@@ -1,4 +1,6 @@
 const cp = require('child_process');
+const express = require('express');
+const app = express();
 
 const runI3msgCommand = (command, cb) =>
   cp.exec(`i3-msg --type ${command}`, (error, stdout, stderr) => {
@@ -6,11 +8,17 @@ const runI3msgCommand = (command, cb) =>
       return console.error(error);
     }
 
-    console.log(stdout);
     console.error(stderr);
     cb && cb(stdout);
   });
 
-runI3msgCommand('get_tree', (stdout) => {
-  console.log(JSON.parse(stdout));
+const validCommands = []
+
+// TODO: Clean output!
+app.get('/:command', (req, res) => {
+  runI3msgCommand(req.params.command, (stdout) => {
+    res.json(JSON.parse(stdout));
+  });
 });
+
+app.listen(8080);
