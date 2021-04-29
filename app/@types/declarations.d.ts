@@ -1,4 +1,4 @@
-type Split = 'splith' | 'splitv';
+type Layout = 'tabbed' | 'splith' | 'splitv' | 'stacked' | 'dockarea' | 'output';
 
 type Rect = {
   x: number,
@@ -16,33 +16,48 @@ type Gaps = {
   left: number,
 }
 
+type WindowProperties = {
+  title: string,
+  instance: string,
+  class: string,
+  window_role: string,
+  machine: any,
+  transient_for: number;
+}
+
 interface I3Node {
   id: number;
-  type: string;
-  orientation: 'none' | 'horizontal' | 'vertical';
-  scratchpad_state: 'none';
-  percent: number | null;
-  urgent: boolean;
-  marks: Array<any>;
-  focused: boolean;
-  layout: Split;
-  workspace_layout: string;
-  last_split_layout: Split;
-  border: string;
-  current_border_width: number;
-  rect: Rect;
-  deco_rect: Rect;
-  window_rect: Rect;
-  geometry: Rect;
   name: string;
+  type: string;
+  border: 'normal' | 'none' | 'pixel';
+  current_border_width: number;
+  layout: Layout;
+  last_split_layout: Layout;
+  workspace_layout: string;
+
+  /**
+   * @deprecated by i3wm: layout should be preferred.
+   */
+  orientation: 'none' | 'horizontal' | 'vertical';
+  percent: number | null;
+  rect: Rect;
+  window_rect: Rect;
+  deco_rect: Rect;
+  geometry: Rect;
   window: number | null;
-  window_type: string | null;
-  nodes: Array<I3Node | I3Container | I3Workspace>;
-  floating_nodes: Array<any>;
+  window_properties?: WindowProperties;
+  window_type: 'undefined' | 'normal' | 'dialog' | 'utility' | 'toolbar' | 'splash' | 'menu' | 'dropdown_menu' | 'popup_menu' | 'tooltip' | 'notification' | null;
+  urgent: boolean;
+  marks: Array<string>;
+  focused: boolean;
   focus: Array<number>;
   fullscreen_mode: number;
-  sticky: boolean;
   floating: string;
+  nodes: Array<I3Node | I3Container | I3Workspace>;
+  floating_nodes: Array<any>;
+  
+  sticky: boolean;
+  scratchpad_state: 'none';
   swallows: Array<any>;
 };
 
@@ -51,6 +66,7 @@ interface I3Container extends I3Node {
 };
 
 interface I3Workspace extends I3Container {
-  num: number,
-  gaps: Gaps
+  num: number;
+  gaps: Gaps;
+  visible?: boolean;
 };
