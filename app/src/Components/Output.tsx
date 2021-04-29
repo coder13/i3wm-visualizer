@@ -3,15 +3,16 @@ import { Switch, Route, Link } from 'react-router-dom';
 import { Container, Segment } from 'semantic-ui-react'
 import ContainerView from './Container';
 
-interface WorkspaceProps {
-  tree: I3Workspace;
+interface OutputProps {
+  tree: I3Node;
   depth: number;
   path: string;
 };
 
-const Workspace: React.FC<WorkspaceProps> = ({ tree, depth = 0, path }) => {
+const Output: React.FC<OutputProps> = ({ tree, depth = 0, path }) => {
   return (
     <Container fluid>
+
       <Segment.Group horizontal>
         <Segment>{tree.type}</Segment>
         <Segment>{tree.id}</Segment>
@@ -29,6 +30,8 @@ const Workspace: React.FC<WorkspaceProps> = ({ tree, depth = 0, path }) => {
               switch (node.type) {
                 case 'con':
                   return <ContainerView tree={node as I3Container} depth={depth + 1} path={`${path}/${node.name || node.id}`} /> 
+                case 'dockarea':
+                  return <p>Dockarea</p>
                 default:
                   return <p>Not sure what's going on here</p>
               }
@@ -37,7 +40,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ tree, depth = 0, path }) => {
         )}
       </Switch>
     </Container>
-  )
+  );
 }
 
-export default Workspace;
+export default Output;

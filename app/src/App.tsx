@@ -1,9 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Loader, Message } from 'semantic-ui-react'
+import { useLocation, BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { Container, Loader, Menu, Message } from 'semantic-ui-react'
 import Tree from './Components/Tree';
 import './App.css';
 
 const serverURI = 'http://localhost:8080'
+
+function Header() {
+  const location = useLocation();
+
+  return (
+    <Menu>
+      <Menu.Item link header><Link to="/">/</Link></Menu.Item>
+      <Menu.Item style={{ flexGrow: 1 }}>{location.pathname}</Menu.Item>
+    </Menu>
+  )
+}
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -34,17 +46,26 @@ function App() {
       </Container>
     )
   }
-
-return (
-  <Container className="app" fluid>
-    {error && error.message && (
-      <Message error>
-        <Message.Header>{error.name}</Message.Header>
-        {error.message}<br/>{error.stack}
-      </Message>
-    )}
-    {tree && <Tree tree={tree} depth={0} /> }
-  </Container>
+  
+  return (
+    <div>
+      <Router>
+        <Header />
+        <Container className="app" fluid>
+          {error && error.message && (
+            <Message error>
+              <Message.Header>{error.name}</Message.Header>
+              {error.message}<br/>{error.stack}
+            </Message>
+          )}
+          <Switch>
+            <Route path="*">
+              {tree && <Tree tree={tree} depth={0} /> }
+            </Route>
+          </Switch>
+        </Container>
+      </Router>
+    </div>
   );
 }
 
