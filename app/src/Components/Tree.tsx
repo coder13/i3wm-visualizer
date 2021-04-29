@@ -1,63 +1,84 @@
 import React from 'react';
+import { SemanticCOLORS, Segment, Divider } from 'semantic-ui-react'
 import Container from './Container';
 import Workspace from './Workspace';
+import RectView from './Rect';
 
-export const printNodes = (nodes: Array<I3Node>) =>
+export const Colors: Array<SemanticCOLORS> = ['red', 'orange', 'yellow', 'olive', 'green', 'teal', 'blue', 'violet', 'purple', 'pink', 'brown', 'grey', 'black'];
+
+export const printNodes = (nodes: Array<I3Node>, depth: number) =>
   nodes.map((node: I3Node) => {
     switch (node.type) {
       case 'con':
-        return <Container key={node.id} tree={node as I3Container} />
+        return <Container key={node.id} tree={node as I3Container} depth={depth + 1}/>
       case 'workspace':
-        return <Workspace key={node.id} tree={node as I3Workspace} />
+        return <Workspace key={node.id} tree={node as I3Workspace} depth={depth + 1} />
       default:
-        return <Tree key={node.id} tree={node} />
+        return <Tree key={node.id} tree={node} depth={depth + 1} />
     }
   });
 
 interface TreeProps {
   tree: I3Node;
+  depth: number;
 };
 
-const Tree: React.FC<TreeProps> = ({ tree }) => {
+const Tree: React.FC<TreeProps> = ({ tree, depth = 0 }) => {
+  const color = Colors[depth % 12];
+
   return (
-    <ul>
-      <hr />
-      <li key={'id'}>id: {JSON.stringify(tree['id'])}</li>
-      <li key={'name'}>name: {JSON.stringify(tree['name'])}</li>
-      <li key={'type'}>type: {JSON.stringify(tree['type'])}</li>
-      <li key={'border'}>border: {JSON.stringify(tree['border'])}</li>
-      <li key={'current_border_width'}>current_border_width: {JSON.stringify(tree['current_border_width'])}</li>
-      <li key={'layout'}>layout: {JSON.stringify(tree['layout'])}</li>
-      <li key={'last_split_layout'}>last_split_layout: {JSON.stringify(tree['last_split_layout'])}</li>
-      <li key={'workspace_layout'}>workspace_layout: {JSON.stringify(tree['workspace_layout'])}</li>
-      <li key={'orientation'}>orientation: {JSON.stringify(tree['orientation'])}</li>
-      <li key={'percent'}>percent: {JSON.stringify(tree['percent'])}</li>
-      <li key={'rect'}>rect: {JSON.stringify(tree['rect'])}</li>
-      <li key={'window_rect'}>window_rect: {JSON.stringify(tree['window_rect'])}</li>
-      <li key={'deco_rect'}>deco_rect: {JSON.stringify(tree['deco_rect'])}</li>
-      <li key={'geometry'}>geometry: {JSON.stringify(tree['geometry'])}</li>
-      <li key={'window'}>window: {JSON.stringify(tree['window'])}</li>
+    <Segment.Group>
+      <Segment inverted color={color}/>
+      <Segment.Group horizontal>
+        <Segment>type: {tree.type}</Segment>
+        <Segment>id: {tree.id}</Segment>
+        <Segment>name: {tree.name}</Segment>
+        <Segment>border: {tree.border}</Segment>
+        <Segment>current_border_width: {tree.current_border_width}</Segment>
+        <Segment>layout: {tree.layout}</Segment>
+        <Segment>last_split_layout: {tree.last_split_layout}</Segment>
+        <Segment>workspace_layout: {tree.workspace_layout}</Segment>
+        <Segment>orientation: {tree.orientation}</Segment>
+        <Segment>percent: {tree.percent}</Segment>
+      </Segment.Group>
+      <RectView name="rect" rect={tree.rect}/>
+      <RectView name="window_rect" rect={tree.window_rect}/>
+      <RectView name="deco_rect" rect={tree.deco_rect}/>
+      <RectView name="geometry" rect={tree.geometry}/>
+      <Segment.Group horizontal>
+        <Segment>window: {tree.window === null ? 'null' : tree.window}</Segment>
+        <Segment>window_type: {tree.window_type === null ? 'null' : tree.window_type}</Segment>
+      </Segment.Group>
       {tree.window_properties && (
-        <li key={'window_properties'}>window_properties: {JSON.stringify(tree['window_properties'])}</li>
-        )}
-      <li key={'window_type'}>window_type: {JSON.stringify(tree['window_type'])}</li>
-      <li key={'urgent'}>urgent: {JSON.stringify(tree['urgent'])}</li>
-      <li key={'marks'}>marks: {JSON.stringify(tree['marks'])}</li>
-      <li key={'focused'}>focused: {JSON.stringify(tree['focused'])}</li>
-      <li key={'focus'}>focus: {JSON.stringify(tree['focus'])}</li>
-      <li key={'fullscreen_mode'}>fullscreen_mode: {JSON.stringify(tree['fullscreen_mode'])}</li>
-      <li key={'floating'}>floating: {JSON.stringify(tree['floating'])}</li>
-      <li key={'nodes'}>{'nodes: '}
+        <Segment.Group horizontal>
+          <Segment>title: {tree.window_properties.title}</Segment>
+          <Segment>instance: {tree.window_properties.instance}</Segment>
+          <Segment>class: {tree.window_properties.class}</Segment>
+          <Segment>window_role: {tree.window_properties.window_role}</Segment>
+          <Segment>machine: {tree.window_properties.machine}</Segment>
+          <Segment>transient_for: {tree.window_properties.transient_for}</Segment>
+        </Segment.Group>
+      )}
+      <Segment>marks: [{tree.marks.join(', ')}]</Segment>
+      <Segment>focus: [{tree.focus.join(', ')}]</Segment>
+      <Segment.Group horizontal>
+        <Segment>urgent: {tree.urgent}</Segment>
+        <Segment>focused: {tree.focused}</Segment>
+        <Segment>fullscreen_mode: {tree.fullscreen_mode}</Segment>
+        <Segment>floating: {tree.floating}</Segment>
+        <Segment>sticky: {tree.sticky}</Segment>
+        <Segment>scratchpad_state: {tree.scratchpad_state}</Segment>
+        <Segment>swallows: [{tree.swallows.map((i) => JSON.stringify(i)).join(', ')}]</Segment>
+      </Segment.Group>
+      <Segment>
+        {'nodes: '}
+        <br />
         {tree.nodes.length
-          ? printNodes(tree.nodes)
+          ? printNodes(tree.nodes, depth)
           : 'none'
         }
-      </li> 
-      <li key={'floating_nodes'}>floating_nodes: {JSON.stringify(tree['floating_nodes'])}</li>
-      <li key={'sticky'}>sticky: {JSON.stringify(tree['sticky'])}</li>
-      <li key={'scratchpad_state'}>scratchpad_state: {JSON.stringify(tree['scratchpad_state'])}</li>
-      <li key={'swallows'}>swallows: {JSON.stringify(tree['swallows'])}</li>
-  </ul>
+      </Segment>
+    </Segment.Group>
   )
 }
 

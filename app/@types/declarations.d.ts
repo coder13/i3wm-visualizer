@@ -22,7 +22,12 @@ type WindowProperties = {
   class: string,
   window_role: string,
   machine: any,
-  transient_for: number;
+  transient_for: number,
+}
+
+type Swallow = {
+  dock: number,
+  insert_where: number,
 }
 
 interface I3Node {
@@ -58,7 +63,7 @@ interface I3Node {
   
   sticky: boolean;
   scratchpad_state: 'none';
-  swallows: Array<any>;
+  swallows: Array<Swallow>;
 };
 
 interface I3Container extends I3Node {
