@@ -37,8 +37,8 @@ interface I3Node {
   name: string;
   window: number | null;
   window_type: string | null;
-  nodes: Array<I3Node>;
-  floating_nodes: Array<I3Node>;
+  nodes: Array<I3Node | I3Container | I3Workspace>;
+  floating_nodes: Array<any>;
   focus: Array<number>;
   fullscreen_mode: number;
   sticky: boolean;
@@ -46,11 +46,11 @@ interface I3Node {
   swallows: Array<any>;
 };
 
-interface I3Output extends I3Node {
+interface I3Container extends I3Node {
   output: string;
 };
 
-interface I3Workspace extends I3Output {
+interface I3Workspace extends I3Container {
   num: number,
   gaps: Gaps
 };
