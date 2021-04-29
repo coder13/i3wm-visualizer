@@ -1,6 +1,7 @@
 import React from 'react';
 import { Switch, Route, Link } from 'react-router-dom';
-import { Container, Segment } from 'semantic-ui-react'
+import { Segment, Menu, SemanticWIDTHSNUMBER } from 'semantic-ui-react';
+import { Colors } from './Tree';
 import ContainerView from './Container';
 
 interface WorkspaceProps {
@@ -10,33 +11,43 @@ interface WorkspaceProps {
 };
 
 const Workspace: React.FC<WorkspaceProps> = ({ tree, depth = 0, path }) => {
+  const nodes = tree.nodes.concat(tree.floating_nodes);
+
   return (
-    <Container fluid>
+    <Segment color={Colors[depth % 12]}>
+      <Segment.Group>
       <Segment.Group horizontal>
         <Segment>{tree.type}</Segment>
         <Segment>{tree.id}</Segment>
         <Segment>{tree.name}</Segment>
+        <Segment>{tree.layout}</Segment>
       </Segment.Group>
 
-      {tree.nodes.map((node) =>
-        <li key={node.id}><Link to={`${path}/${node.name || node.id}`}>{node.id} {node.type} {node.name}</Link></li>
-      )}
+      <Menu attached widths={nodes.length as SemanticWIDTHSNUMBER}>
+        {nodes.map((node) =>
+            <Menu.Item key={node.name} as={Link} to={`${path}/${node.id}`}>
+              {node.name || node.id}
+            </Menu.Item>
+        )}
+      </Menu>
 
       <Switch>
-        {tree.nodes.map((node) =>
-          <Route key={node.id} path={`${path}/${node.name || node.id}`}>
+        {nodes.map((node) =>
+          <Route key={node.id} path={`${path}/${node.id}`}>
             { (() => {
               switch (node.type) {
                 case 'con':
-                  return <ContainerView tree={node as I3Container} depth={depth + 1} path={`${path}/${node.name || node.id}`} /> 
+                case 'floating_con':
+                  return <ContainerView tree={node as I3Container} depth={depth + 1} path={`${path}/${node.id}`} /> 
                 default:
-                  return <p>Not sure what's going on here</p>
+                  return <p>Not sure what's going on here: {node.type}</p>
               }
             })() }
           </Route>
         )}
       </Switch>
-    </Container>
+      </Segment.Group>
+    </Segment>
   )
 }
 
