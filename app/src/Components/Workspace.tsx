@@ -30,7 +30,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ tree, depth = 0, path }) => {
             </Menu.Item>
         )}
       </Menu>
-
+{/* 
       <Switch>
         {nodes.map((node) =>
           <Route key={node.id} path={`${path}/${node.id}`}>
@@ -45,7 +45,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ tree, depth = 0, path }) => {
             })() }
           </Route>
         )}
-      </Switch>
+      </Switch> */}
       </Segment.Group>
     </Segment>
   )

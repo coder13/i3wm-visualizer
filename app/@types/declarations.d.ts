@@ -59,7 +59,7 @@ interface I3Node {
   fullscreen_mode: number;
   floating: string;
   nodes: Array<I3Node | I3Container | I3Workspace>;
-  floating_nodes: Array<any>;
+  floating_nodes: Array<I3Node | I3Container | I3Workspace>;
   
   sticky: boolean;
   scratchpad_state: 'none';

@@ -6,7 +6,7 @@ function Header() {
 
   return (
     <Menu>
-      <Menu.Item link header><Link to="/">/</Link></Menu.Item>
+      <Menu.Item as={Link} to="/" header>/</Menu.Item>
       <Menu.Item style={{ flexGrow: 1 }}>
         <Breadcrumb>
           {location.pathname.split('/').slice(1).map((path, index, array) => [

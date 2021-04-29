@@ -32,7 +32,7 @@ const Output: React.FC<OutputProps> = ({ tree, depth = 0, path }) => {
         )}
       </Menu>
 
-      <Switch>
+      {/* <Switch>
         {nodes.map((node) =>
           <Route key={node.id} path={`${path}/${node.id}`}>
             { (() => {
@@ -48,7 +48,7 @@ const Output: React.FC<OutputProps> = ({ tree, depth = 0, path }) => {
             })() }
           </Route>
         )}
-      </Switch>
+      </Switch> */}
       </Segment.Group>
     </Segment>
   );

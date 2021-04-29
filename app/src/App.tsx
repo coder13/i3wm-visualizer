@@ -38,22 +38,20 @@ function App() {
   }
   
   return (
-    <div>
-      <Router>
-        <Header />
-        {error && error.message && (
-          <Message error>
-            <Message.Header>{error.name}</Message.Header>
-            {error.message}<br/>{error.stack}
-          </Message>
-        )}
-        <Switch>
-          <Route path="*">
-            {tree && <Tree tree={tree} depth={0} /> }
-          </Route>
-        </Switch>
-      </Router>
-    </div>
+    <Router>
+      <Header />
+      {error && error.message && (
+        <Message error>
+          <Message.Header>{error.name}</Message.Header>
+          {error.message}<br/>{error.stack}
+        </Message>
+      )}
+      <Switch>
+        <Route path="*">
+          {tree && <Tree tree={tree} depth={0} /> }
+        </Route>
+      </Switch>
+    </Router>
   );
 }
 

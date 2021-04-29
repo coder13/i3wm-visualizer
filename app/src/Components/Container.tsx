@@ -13,6 +13,8 @@ interface ContainerProps {
 const ContainerView: React.FC<ContainerProps> = ({ tree, depth = 0, path }) => {
   const nodes = tree.nodes.concat(tree.floating_nodes);
 
+  console.log(16, path)
+
   return (
     <Segment color={Colors[depth % 12]}>
       <Segment.Group>
@@ -44,7 +46,7 @@ const ContainerView: React.FC<ContainerProps> = ({ tree, depth = 0, path }) => {
             )}
           </Menu>
 
-          <Switch>
+          {/* <Switch>
             {nodes.map((node) =>
               <Route key={node.id} path={`${path}/${node.id}`}>
                 { (() => {
@@ -60,7 +62,7 @@ const ContainerView: React.FC<ContainerProps> = ({ tree, depth = 0, path }) => {
                 })() }
               </Route>
             )}
-          </Switch>
+          </Switch> */}
         </>
       ) : false}
       </Segment.Group>
