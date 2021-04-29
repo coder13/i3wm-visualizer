@@ -1,5 +1,6 @@
 const cp = require('child_process');
 const express = require('express');
+const cors = require('cors');
 const app = express();
 
 const runI3msgCommand = (command, cb) =>
@@ -13,6 +14,10 @@ const runI3msgCommand = (command, cb) =>
   });
 
 const validCommands = []
+
+app.use(cors({
+  origin: 'http://localhost:3000'
+}));
 
 // TODO: Clean output!
 app.get('/:command', (req, res) => {
