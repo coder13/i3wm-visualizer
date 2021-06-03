@@ -48,7 +48,7 @@ function App() {
       )}
       <Switch>
         <Route path="*">
-          {tree && <Tree tree={tree} depth={0} /> }
+          {tree && <Tree tree={tree} /> }
         </Route>
       </Switch>
     </Router>

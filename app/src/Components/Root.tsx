@@ -1,14 +1,15 @@
 import React from 'react';
 import { Container, Header, Table } from 'semantic-ui-react';
 
-interface WorkspaceProps {
-  node: I3Workspace;
-};
-const WorkspaceView: React.FC<WorkspaceProps> = ({ node }) => {
+interface RootViewProps {
+  node: I3Node;
+};  
+
+const RootView: React.FC<RootViewProps> = ({ node }) => {
 
   return (
     <Container fluid style={{
-      marginTop: '1em',
+      marginTop: '1em'
     }}>
       <Header as="h2">
         <Header.Content>{node.name}</Header.Content>
@@ -48,42 +49,8 @@ const WorkspaceView: React.FC<WorkspaceProps> = ({ node }) => {
           </Table.Row>
         </Table.Body>
       </Table>
-
-      <Table collapsing>
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell colSpan='2'>Gaps</Table.HeaderCell>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          <Table.Row>
-            <Table.Cell>Inner</Table.Cell>
-            <Table.Cell>{node.gaps.inner}</Table.Cell>
-          </Table.Row>
-          <Table.Row>
-            <Table.Cell>Outer</Table.Cell>
-            <Table.Cell>{node.gaps.outer}</Table.Cell>
-          </Table.Row>
-          <Table.Row>
-            <Table.Cell>Top</Table.Cell>
-            <Table.Cell>{node.gaps.top}</Table.Cell>
-          </Table.Row>
-          <Table.Row>
-            <Table.Cell>Right</Table.Cell>
-            <Table.Cell>{node.gaps.right}</Table.Cell>
-          </Table.Row>
-          <Table.Row>
-            <Table.Cell>Bottom</Table.Cell>
-            <Table.Cell>{node.gaps.bottom}</Table.Cell>
-          </Table.Row>
-          <Table.Row>
-            <Table.Cell>Left</Table.Cell>
-            <Table.Cell>{node.gaps.left}</Table.Cell>
-          </Table.Row>
-        </Table.Body>
-      </Table>
     </Container>
   )
 }
 
-export default WorkspaceView;
+export default RootView;
